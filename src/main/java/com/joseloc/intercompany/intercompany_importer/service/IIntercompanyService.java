@@ -1,6 +1,6 @@
 package com.joseloc.intercompany.intercompany_importer.service;
 
-import com.joseloc.intercompany.intercompany_importer.model.IntercompanyExcelDto;
+import com.joseloc.intercompany.intercompany_importer.model.dto.IntercompanyExcelDto;
 
 import java.util.List;
 

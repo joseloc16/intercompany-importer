@@ -1,6 +1,7 @@
-package com.joseloc.intercompany.intercompany_importer.service;
+package com.joseloc.intercompany.intercompany_importer.service.impl;
 
-import com.joseloc.intercompany.intercompany_importer.model.IntercompanyExcelDto;
+import com.joseloc.intercompany.intercompany_importer.model.dto.IntercompanyExcelDto;
+import com.joseloc.intercompany.intercompany_importer.service.IIntercompanyService;
 import jakarta.annotation.PostConstruct;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,15 +28,14 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
 
     public IntercompanyServiceImpl( ) {
         data = new ArrayList<>( );
-        //data = readProductFromExcel( );
     }
 
     @PostConstruct
     public void init( ) {
-        data = readProductFromExcel( );
+        data = readIntercompanyFromExcel( );
     }
 
-    private List<IntercompanyExcelDto> readProductFromExcel( ) {
+    private List<IntercompanyExcelDto> readIntercompanyFromExcel( ) {
 
         List<IntercompanyExcelDto> list = new ArrayList<>( );
 
@@ -95,6 +95,10 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
             e.printStackTrace( );
         }
         return list;
+    }
+
+    private void loadFromExcel() {
+
     }
 
     @Override

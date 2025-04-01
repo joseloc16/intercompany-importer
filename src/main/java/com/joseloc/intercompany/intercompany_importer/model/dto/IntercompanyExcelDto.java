@@ -1,4 +1,4 @@
-package com.joseloc.intercompany.intercompany_importer.model;
+package com.joseloc.intercompany.intercompany_importer.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.joseloc.intercompany.intercompany_importer.controller;
 
-import com.joseloc.intercompany.intercompany_importer.model.IntercompanyExcelDto;
+import com.joseloc.intercompany.intercompany_importer.model.dto.IntercompanyExcelDto;
 import com.joseloc.intercompany.intercompany_importer.service.IIntercompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
