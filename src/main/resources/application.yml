@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: intercompany-importer
+  datasource:
+    url: URL
+    username: USER_DEV
+    password: PASSWORD
+    driver-class-name: com.sap.db.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.HANARowStoreDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+
+filename: C:/Users/Usuario/Documents/ZTCONF_TIP_CONC2.XLSX
+
+server:
+  port: 1716
