@@ -5,5 +5,5 @@ import com.joseloc.intercompany.intercompany_importer.model.dto.IntercompanyExce
 import java.util.List;
 
 public interface IIntercompanyService {
-    List<IntercompanyExcelDto> getData();
+    List<IntercompanyExcelDto> saveData( );
 }

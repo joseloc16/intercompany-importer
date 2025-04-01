@@ -18,7 +18,7 @@ public class IntercompanyController {
 
     @GetMapping( value = "/get", headers = "Accept=application/json" )
     public List<IntercompanyExcelDto> getAllCompanies( ) {
-        List<IntercompanyExcelDto> tasks = service.getData( );
+        List<IntercompanyExcelDto> tasks = service.saveData( );
         return tasks;
     }
 

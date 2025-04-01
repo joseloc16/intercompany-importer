@@ -1,6 +1,7 @@
 package com.joseloc.intercompany.intercompany_importer.service.impl;
 
 import com.joseloc.intercompany.intercompany_importer.model.dto.IntercompanyExcelDto;
+import com.joseloc.intercompany.intercompany_importer.repository.IntercompanySpRepository;
 import com.joseloc.intercompany.intercompany_importer.service.IIntercompanyService;
 import jakarta.annotation.PostConstruct;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,10 +25,13 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
     @Value( "${filename}" )
     private String fileName;
 
+    private IntercompanySpRepository spRepository;
+
     private static List<IntercompanyExcelDto> data;
 
-    public IntercompanyServiceImpl( ) {
+    public IntercompanyServiceImpl( IntercompanySpRepository spRepository ) {
         data = new ArrayList<>( );
+        this.spRepository = spRepository;
     }
 
     @PostConstruct
@@ -57,8 +61,13 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
 
                 while( rowIterator.hasNext( ) ) {
 
+                    Row row = rowIterator.next();
+
+                    if (row.getRowNum() == 0) {
+                        continue;
+                    }
+
                     IntercompanyExcelDto intercompany = new IntercompanyExcelDto( );
-                    Row row = rowIterator.next( );
                     Iterator<Cell> cellIterator = row.cellIterator( );
 
                     while( cellIterator.hasNext( ) ) {
@@ -97,12 +106,20 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
         return list;
     }
 
-    private void loadFromExcel() {
-
+    private void loadFromExcel( List<IntercompanyExcelDto> data ) {
+        for( IntercompanyExcelDto dto : data ) {
+            try {
+                spRepository.insertFromExcelRow( dto );
+            } catch( Exception e ) {
+                System.err.println( "Error procesando fila: " + dto );
+                e.printStackTrace( );
+            }
+        }
     }
 
     @Override
-    public List<IntercompanyExcelDto> getData( ) {
+    public List<IntercompanyExcelDto> saveData( ) {
+        loadFromExcel( data );
         return data;
     }
 }
