@@ -1,9 +1,11 @@
 package com.joseloc.intercompany.intercompany_importer.service.impl;
 
 import com.joseloc.intercompany.intercompany_importer.model.dto.IntercompanyExcelDto;
+import com.joseloc.intercompany.intercompany_importer.model.records.ResultadoSpDto;
 import com.joseloc.intercompany.intercompany_importer.repository.IntercompanySpRepository;
 import com.joseloc.intercompany.intercompany_importer.service.IIntercompanyService;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Slf4j
 @Service
 public class IntercompanyServiceImpl implements IIntercompanyService {
 
@@ -61,9 +64,9 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
 
                 while( rowIterator.hasNext( ) ) {
 
-                    Row row = rowIterator.next();
+                    Row row = rowIterator.next( );
 
-                    if (row.getRowNum() == 0) {
+                    if( row.getRowNum( ) == 0 ) {
                         continue;
                     }
 
@@ -107,14 +110,36 @@ public class IntercompanyServiceImpl implements IIntercompanyService {
     }
 
     private void loadFromExcel( List<IntercompanyExcelDto> data ) {
+
+        int totalExitosos = 0;
+        int totalErrores = 0;
+
+        int fila = 1;
+
         for( IntercompanyExcelDto dto : data ) {
             try {
-                spRepository.insertFromExcelRow( dto );
+
+                log.info( "Procesando fila {}", fila );
+
+                ResultadoSpDto resultado = spRepository.insertFromExcelRow( dto );
+
+                if( !"00".equals( resultado.codigo( ) ) ) {
+                    totalErrores++;
+                } else {
+                    totalExitosos++;
+                }
+
             } catch( Exception e ) {
-                System.err.println( "Error procesando fila: " + dto );
-                e.printStackTrace( );
+                totalErrores++;
+                log.error( "Error procesando fila {}", fila );
+                log.debug( "Stack trace completo", e );
             }
+            fila++;
         }
+
+        log.info( "Registros procesados exitosamente: {}", totalExitosos );
+        log.warn( "Registros no procesados: {}", totalErrores );
+
     }
 
     @Override
